@@ -1,0 +1,120 @@
+[
+  {
+    "train_id": "rajdhani_12301",
+    "train_no": 12301,
+    "seats": [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "station_times": {
+      "delhi": "16:30:00",
+      "kanpur": "20:45:00",
+      "prayagraj": "22:30:00",
+      "patna": "03:00:00",
+      "howrah": "09:30:00"
+    },
+    "stations": [
+      "delhi",
+      "kanpur",
+      "prayagraj",
+      "patna",
+      "howrah"
+    ]
+  },
+  {
+    "train_id": "shatabdi_12002",
+    "train_no": 12002,
+    "seats": [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "station_times": {
+      "delhi": "06:00:00",
+      "agra": "08:00:00",
+      "jhansi": "10:45:00",
+      "bhopal": "13:30:00"
+    },
+    "stations": [
+      "delhi",
+      "agra",
+      "jhansi",
+      "bhopal"
+    ]
+  },
+  {
+    "train_id": "duronto_12259",
+    "train_no": 12259,
+    "seats": [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "station_times": {
+      "mumbai": "17:15:00",
+      "nagpur": "01:00:00",
+      "bhopal": "05:45:00",
+      "delhi": "11:00:00"
+    },
+    "stations": [
+      "mumbai",
+      "nagpur",
+      "bhopal",
+      "delhi"
+    ]
+  },
+  {
+    "train_id": "express_12627",
+    "train_no": 12627,
+    "seats": [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "station_times": {
+      "bangalore": "20:00:00",
+      "salem": "22:00:00",
+      "erode": "23:00:00",
+      "coimbatore": "01:30:00",
+      "palakkad": "03:15:00",
+      "kochi": "06:30:00"
+    },
+    "stations": [
+      "bangalore",
+      "salem",
+      "erode",
+      "coimbatore",
+      "palakkad",
+      "kochi"
+    ]
+  },
+  {
+    "train_id": "konkan_10103",
+    "train_no": 10103,
+    "seats": [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "station_times": {
+      "mumbai": "05:45:00",
+      "ratnagiri": "10:30:00",
+      "madgaon": "14:45:00",
+      "udupi": "18:00:00",
+      "mangalore": "20:30:00"
+    },
+    "stations": [
+      "mumbai",
+      "ratnagiri",
+      "madgaon",
+      "udupi",
+      "mangalore"
+    ]
+  }
+]
