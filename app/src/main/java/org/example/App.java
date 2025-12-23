@@ -6,14 +6,13 @@ package org.example;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
 
 import org.example.entities.Train;
 import org.example.entities.User;
 import org.example.services.TicketBookingService;
-// import org.example.services.TrainService;
+import org.example.services.TrainService;
 import org.example.util.UserServiceUtil;
 
 public class App {
@@ -24,6 +23,15 @@ public class App {
         int option = 0;
 
         TicketBookingService ticketBookingService;
+        TrainService trainService;
+
+        try {
+            trainService = new TrainService();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            scanner.close();
+            return;
+        }
 
         try {
             ticketBookingService = new TicketBookingService();
@@ -43,7 +51,7 @@ public class App {
             System.out.println("6. Cancel my Booking");
             System.out.println("7. Exit the App");
             option = scanner.nextInt();
-            Train trainSelectedForBooking = new Train();
+
             switch (option) {
                 case 1:
                     System.out.println("Enter the username to signup");
@@ -82,92 +90,109 @@ public class App {
 
                 case 4:
                     List<Train> allTrains = ticketBookingService.getAllTrains();
-                    // Better: create a getAllTrains() method, but using this for now
 
                     if (allTrains.isEmpty()) {
                         System.out.println("No trains available.");
                         break;
                     }
 
-                    // 1️⃣ List all trains
-                    System.out.println("Available trains:");
-                    for (int i = 0; i <= allTrains.size(); i++) {
-                        System.out.println((i + 1) + ". Train Station: " + allTrains.get(i).getStations());
-                    }
+                    System.out.println("Available stations:");
+                    allTrains.stream()
+                            .flatMap(train -> train.getStations().stream())
+                            .distinct()
+                            .forEach(station -> System.out.println("- " + station));
 
-                    System.out.println("Select a train:");
-                    int trainChoice = scanner.nextInt() - 1;
+                    scanner.nextLine();
 
-                    if (trainChoice < 0 || trainChoice >= allTrains.size()) {
-                        System.out.println("Invalid train selection");
+                    System.out.print("Enter source station: ");
+                    String source = scanner.nextLine().trim().toLowerCase();
+
+                    System.out.print("Enter destination station: ");
+                    String destination = scanner.nextLine().trim().toLowerCase();
+
+                    List<Train> availableTrains = trainService.searchTrains(source, destination);
+
+                    if (availableTrains.isEmpty()) {
+                        System.out.println("No trains available for this route.");
                         break;
                     }
 
-                    trainSelectedForBooking = allTrains.get(trainChoice);
-
-                    // 2️⃣ List stations of selected train
-                    List<String> stations = trainSelectedForBooking.getStations();
-                    Map<String, String> timings = trainSelectedForBooking.getStationTimes();
-
-                    System.out.println("Stations in this train:");
-                    for (int i = 0; i < stations.size(); i++) {
-                        String station = stations.get(i);
-                        System.out.println((i + 1) + ". " + station + " (" + timings.get(station) + ")");
+                    System.out.println("\nAvailable trains:");
+                    for (Train train : availableTrains) {
+                        System.out.println(
+                                "Train ID: " + train.getTrainId() +
+                                " | Departure: " + train.getStationTimes().get(source) +
+                                " | Arrival: " + train.getStationTimes().get(destination)
+                            );
                     }
-
-                    // 3️⃣ Select source station
-                    System.out.println("Select source station:");
-                    int sourceIndex = scanner.nextInt() - 1;
-
-                    if (sourceIndex < 0 || sourceIndex >= stations.size()) {
-                        System.out.println("Invalid source station");
-                        break;
-                    }
-
-                    String sourceStation = stations.get(sourceIndex);
-
-                    // 4️⃣ Select destination station (only after source)
-                    System.out.println("Select destination station:");
-                    for (int i = sourceIndex + 1; i < stations.size(); i++) {
-                        System.out.println((i + 1) + ". " + stations.get(i));
-                    }
-
-                    int destinationIndex = scanner.nextInt() - 1;
-
-                    if (destinationIndex <= sourceIndex || destinationIndex >= stations.size()) {
-                        System.out.println("Invalid destination station");
-                        break;
-                    }
-
-                    String destinationStation = stations.get(destinationIndex);
-
-                    System.out.println("Selected Train: " + trainSelectedForBooking.getTrainId());
-                    System.out.println("From: " + sourceStation);
-                    System.out.println("To: " + destinationStation);
 
                     break;
 
                 case 5:
-                    System.out.println("Select a seat out of these seats");
-                    List<List<Integer>> seats = ticketBookingService.fetchSeats(trainSelectedForBooking);
-                    for (List<Integer> row : seats) {
-                        for (Integer val : row) {
-                            System.out.print(val + " ");
+                    scanner.nextLine(); 
+
+                    System.out.print("Enter Train ID to book seat: ");
+                    String trainIdInput = scanner.nextLine().trim();
+
+                    Train selectedTrain = ticketBookingService.getAllTrains()
+                            .stream()
+                            .filter(t -> t.getTrainId().equalsIgnoreCase(trainIdInput))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (selectedTrain == null) {
+                        System.out.println("Invalid Train ID. Please search trains first.");
+                        break;
+                    }
+
+                    System.out.print("Enter date of travel (YYYY-MM-DD): ");
+                    String dateOfTravel = scanner.nextLine().trim();
+
+                    List<List<Integer>> seats = ticketBookingService.fetchSeats(selectedTrain);
+
+                    System.out.println("\nSeat Layout");
+                    System.out.println("0 = Available | 1 = Booked");
+                    System.out.println("Row = horizontal | Column = vertical\n");
+
+                    System.out.print("     ");
+                    for (int c = 0; c < seats.get(0).size(); c++) {
+                        System.out.print(c + " ");
+                    }
+                    System.out.println();
+
+                    for (int r = 0; r < seats.size(); r++) {
+                        System.out.print("Row " + r + "  ");
+                        for (int c = 0; c < seats.get(r).size(); c++) {
+                            System.out.print(seats.get(r).get(c) + " ");
                         }
                         System.out.println();
                     }
-                    System.out.println("Select the seat by typing the row and column");
-                    System.out.println("Enter the row");
+
+                    System.out.print("\nEnter row number: ");
                     int row = scanner.nextInt();
-                    System.out.println("Enter the column");
+
+                    System.out.print("Enter column number: ");
                     int col = scanner.nextInt();
-                    System.out.println("Booking your seat....");
-                    Boolean booked = ticketBookingService.bookTrainSeat(trainSelectedForBooking, row, col);
-                    if (booked.equals(Boolean.TRUE)) {
-                        System.out.println("Booked! Enjoy your journey");
+
+                    String sourceStation = selectedTrain.getStations().get(0); 
+                    String destinationStation = selectedTrain.getStations().get(selectedTrain.getStations().size() - 1); 
+
+                    System.out.println("Booking your seat...");
+
+                    Boolean booked = ticketBookingService.bookTrainSeat(
+                            selectedTrain,
+                            row,
+                            col,
+                            sourceStation,
+                            destinationStation,
+                            dateOfTravel);
+
+                    if (Boolean.TRUE.equals(booked)) {
+                        System.out.println("Seat booked successfully 🎉");
                     } else {
-                        System.out.println("Can't book this seat");
+                        System.out.println("Seat already booked or invalid position.");
                     }
+
                     break;
 
                 case 6:

@@ -1,6 +1,5 @@
 package org.example.entities;
 
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -19,15 +18,24 @@ public class Ticket {
 
   private Train train;
 
+  private String userName;
+
+  private int row;
+
+  private int seat;
+
   public Ticket(){};
 
-  public Ticket(String ticketId, String userId, String source, String destination, String dateOfTravel, Train train){
+  public Ticket(String ticketId, String userId, String userName, String source, String destination, String dateOfTravel, Train train, int row, int seat){
     this.ticketId = ticketId;
     this.userId = userId;
+    this.userName = userName;
     this.source = source;
     this.destination = destination;
     this.dateOfTravel = dateOfTravel;
     this.train = train;
+    this.row = row;
+    this.seat = seat;
   }
 
   public String getUserId() {
@@ -70,9 +78,9 @@ public class Ticket {
     this.train = train;
   }
 
-  public String getTicketInfo(){
-    return String.format("Ticket ID: %s belongs to User %s from %s to %s on %s", ticketId, userId, source, destination, dateOfTravel);
-  }
+  // public String getTicketInfo(){
+  //   return String.format("Ticket ID: %s belongs to User: %s from %s to %s on %s", ticketId, userName, source, destination, dateOfTravel);
+  // }
 
   public String getTicketId(){
     return ticketId;
@@ -80,5 +88,29 @@ public class Ticket {
 
   public void setTicketId(String ticketId){
     this.ticketId = ticketId;
+  }
+
+  public int getRow() {
+    return row;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public int getSeat() {
+    return seat;
+  }
+
+  public void setSeat(int seat) {
+    this.seat = seat;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 }
