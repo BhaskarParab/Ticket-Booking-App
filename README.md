@@ -73,6 +73,16 @@ Data Storage – Optional: Extend to save/load data from files for persistence.
 
 CLI User Interface – Simple and clean command-line interactions.
 
+## Screenshots / CLI Demo
+
+<img width="512" height="299" alt="ticket" src="https://github.com/user-attachments/assets/f59dc241-b455-4fcf-a610-cb9532e93782" />
+
+
+<img width="497" height="954" alt="ticket2" src="https://github.com/user-attachments/assets/62fd6259-7a3e-483f-abd6-00d02fb5d4e6" />
+
+
+<img width="531" height="670" alt="ticket3" src="https://github.com/user-attachments/assets/cf063fc0-7f04-4c6d-8196-d691173ca30c" />
+
 ## Contributing
 
 Contributions are always welcome! If you want to improve the Ticket Booking App, follow these steps:
